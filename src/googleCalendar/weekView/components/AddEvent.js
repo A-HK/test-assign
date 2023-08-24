@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Input, DatePicker} from 'antd';
 import moment from 'moment';
 import {inputStyles} from '../styles';
@@ -6,6 +6,8 @@ import {inputStyles} from '../styles';
 const {RangePicker} = DatePicker;
 
 function AddEvent (props) {
+
+
   return (
     <React.Fragment>
       <Input

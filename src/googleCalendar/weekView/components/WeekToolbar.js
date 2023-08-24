@@ -11,12 +11,23 @@ import {
 import moment from 'moment';
 
 function WeekToolbar (props) {
-  const formattedDate = moment (props.startDate).format ('MMM YYYY');
+  const formattedDate = moment (props.startDate).format ('DD MMM');
+  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const d = new Date();
+  let day = weekday[d.getDay()];
+  console.log(formattedDate)
   return (
     <Row type="flex" gutter={4} style={toolbar}>
-      <Col span={6} offset={3} style={appTitle}>
-        <Icon type="calendar" style={spacify} />Meeting Calendar
+      <Col span={12} offset={3} style={appTitle}>
+      <Col span={8}>
+        CALENDAR
+        </Col>
+        <br/>
+        <Col span={8}>
+        {`${day}, ${formattedDate}`}
+        </Col>
       </Col>
+      
       <Col span={3} offset={8} style={alignRight}>
         <Tooltip placement="topLeft" title={moment ().format ('dddd, MMM D')}>
           <Button onClick={props.goToToday}>Today</Button>
@@ -28,9 +39,7 @@ function WeekToolbar (props) {
         <Button onClick={props.goToNextWeek} icon="right" />
       </Col>
 
-      <Col span={2} style={toolbarDate}>
-        {formattedDate}
-      </Col>
+     
 
     </Row>
   );

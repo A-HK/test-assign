@@ -3,8 +3,10 @@ import React, {Component} from 'react';
 import AddEvent from './AddEvent';
 
 class AddEventModal extends Component {
+  
   state = {
     title: '',
+    going: false,
   };
 
   /**
@@ -40,8 +42,16 @@ class AddEventModal extends Component {
     this.props.onOk (this.state.title);
   };
 
+  handleGoingChange = () => {
+    this.setState((prevState) => ({
+      going: !prevState.going,
+    }));
+  };
+
   render () {
-    const {title} = this.state;
+    const {title, going} = this.state;
+    const eventColor = going ? 'green' : 'blue';
+
     return (
       <Modal
         visible={this.props.visible}
@@ -54,15 +64,28 @@ class AddEventModal extends Component {
           <Button key="submit" type="primary" onClick={this.handleOk}>
             {this.props.editMode ? 'Update Event' : 'Add Event'}
           </Button>,
+          
         ]}
       >
+          <div style={{ color: eventColor }}>
+          {/* Checkbox for "going" */}
+          <label>
+            <input
+              type="checkbox"
+              checked={going}
+              onChange={this.handleGoingChange}
+            />
+            Going
+          </label>
         <AddEvent
           title={title}
           onTitleChange={this.handleTitleChange}
           start={this.props.eventStart}
           end={this.props.eventEnd}
           onTimeChange={this.props.onTimeChange}
+          going={going}
         />
+            </div>
       </Modal>
     );
   }

@@ -3,13 +3,23 @@ import moment from 'moment';
 import AddEventModal from './AddEventModal';
 import {generateWeekViewCoordinates} from '../../utils';
 import {eventHighlighter} from '../styles';
+import mockData from '../../../mockData';
 
 class EventHighlighter extends Component {
+
+
   state = {
     showEditEventModal: false,
     eventNewStart: null,
     eventNewEnd: null,
+    test: false,
+    isPrivate: false,
+    // normalEvent: true,
+    // stretchingEvent: false,
+    // allDayaEvent: false
   };
+
+ 
 
   /**
    * Deletes the event from the event list
@@ -60,6 +70,18 @@ class EventHighlighter extends Component {
     });
   };
 
+  handleGoingChange = () => {
+    this.setState((prevState) => ({
+      test: !prevState.test,
+    }));
+  };
+
+  handlePrivateChange = () => {
+    this.setState((prevState) => ({
+      isPrivate: !prevState.isPrivate,
+    }));
+  };
+
   /**
    * Closes modal and does nothing more!
    */
@@ -69,8 +91,10 @@ class EventHighlighter extends Component {
     });
   };
 
+
   render () {
-    const {showEditEventModal, eventNewStart, eventNewEnd} = this.state;
+    const {showEditEventModal, eventNewStart, eventNewEnd, test, isPrivate} = this.state;
+  //  const test = true;
     return (
       <React.Fragment>
         <AddEventModal
@@ -84,17 +108,41 @@ class EventHighlighter extends Component {
           eventEnd={eventNewEnd}
           onTimeChange={this.onCurrentEventTimeChange}
         />
+        {/* {mockData.events.map((event) => {
+          return (
+            <div
+            onClick={this.openEditEventModal}
+        
+          >
+            {event.title} <br />
+            <span style={{fontSize: 10}}>
+              {moment (event.start).format ('hh:mm a')}
+              {' '}
+              -
+              {' '}
+              {moment (event.end).format ('hh:mm a')}
+            </span>
+          </div>
+          )
+        })
+
+        } */}
+        
         <div
-          onClick={this.openEditEventModal}
+       
           style={{
             ...generateWeekViewCoordinates (
               this.props.event,
               this.props.startDate
             ),
             ...eventHighlighter,
+            
+            "backgroundColor" : test? "green" : "blue",
+            "height" : "70px"
           }}
         >
-          {this.props.event.title} <br />
+          
+          {!isPrivate && this.props.event.title} <br />
           <span style={{fontSize: 10}}>
             {moment (this.props.event.start).format ('hh:mm a')}
             {' '}
@@ -102,7 +150,37 @@ class EventHighlighter extends Component {
             {' '}
             {moment (this.props.event.end).format ('hh:mm a')}
           </span>
+          <br />
+          <button
+           onClick={()=>{
+            this.openEditEventModal();
+          }}
+          style={{
+            "backgroundColor": "black"
+          }}
+          >Update event
+          </button>
+          <button
+           onClick={()=>{
+            this.handlePrivateChange();
+          }}
+          style={{
+            "backgroundColor": "black"
+          }}
+          >Mark as private
+          </button>
+          <button
+          onClick={()=>{
+            this.handleGoingChange(test)
+          }}
+          style={{
+            "backgroundColor": "black"
+          }}
+          >Mark as going
+          </button>
         </div>
+
+       
       </React.Fragment>
     );
   }
